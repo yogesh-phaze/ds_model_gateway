@@ -1,0 +1,22 @@
+services:
+  gateway:
+    build: .
+    image: ai-inference-gateway:local
+    container_name: ai-inference-gateway
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    networks:
+      - model-net
+    restart: unless-stopped
+
+networks:
+  model-net:
+    # Must be the Docker network the octen-embed-service and clip-embed
+    # containers are already on, so the gateway can reach them by
+    # container name. Override with MODEL_NETWORK if yours differs
+    # (check with `docker inspect <model-container> --format
+    # '{{json .NetworkSettings.Networks}}'`).
+    name: ${MODEL_NETWORK:-image_embedding_model_default}
+    external: true

@@ -1,0 +1,9 @@
+services:
+  gateway:
+    build: .
+    image: ai-inference-gateway:local
+    container_name: ai-inference-gateway
+    network_mode: host
+    env_file:
+      - .env
+    restart: unless-stopped
